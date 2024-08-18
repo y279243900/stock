@@ -15,9 +15,9 @@ import time
 options = webdriver.ChromeOptions()
 options.add_experimental_option("excludeSwitches", ["enable-automation"])
 options.add_experimental_option('useAutomationExtension', False)
-options.add_argument("--headless")  # 无头模式，不会显示浏览器界面
-options.add_argument("--disable-gpu")
-options.add_argument("--no-sandbox")
+# options.add_argument("--headless")  # 无头模式，不会显示浏览器界面
+# options.add_argument("--disable-gpu")
+# options.add_argument("--no-sandbox")
 
 # 创建 Chrome WebDriver 实例
 driver = webdriver.Chrome(options=options)
@@ -30,15 +30,15 @@ driver.execute_cdp_cmd("Page.addScriptToEvaluateOnNewDocument", {
 
 def get_img(stock: str = ""):
     driver.get(f"https://www.futunn.com/stock/{stock}-US")
-    menu = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.CLASS_NAME, 'select-component.minute-select.triangle-style'))
-    )
-    menu.click()
-    pre_market_item = WebDriverWait(driver, 10).until(
-        EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), '盘前分时')]"))
-    )
-    pre_market_item.click()
     try:
+        menu = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CLASS_NAME, 'select-component.minute-select.triangle-style'))
+        )
+        menu.click()
+        pre_market_item = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.XPATH, "//div[contains(text(), '盘前分时')]"))
+        )
+        pre_market_item.click()
         # 使用显式等待确保Canvas元素加载完成
         canvas = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'canvas[data-zr-dom-id="zr_0"]'))
@@ -87,7 +87,7 @@ def get_img(stock: str = ""):
 
 
 def main():
-    with open("D:/Code/Python/pachong/stock_list.json") as f:
+    with open("/config/filter_stocks.json") as f:
         stock_list = json.load(f)
     for i in stock_list:
         get_img(i)
@@ -97,3 +97,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # get_img("MVO")
+    # ana_img("MVO")

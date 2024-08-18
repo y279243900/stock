@@ -1,7 +1,7 @@
 import json
 import os
 
-with open("D:/Code/Python/pachong/stock_list.json") as f:
+with open("/stock/stock_list.json") as f:
     stock_list = json.load(f)
 print(stock_list)
 

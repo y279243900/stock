@@ -1,3 +1,5 @@
+import json
+
 import cv2
 import numpy as np
 import os
@@ -10,6 +12,7 @@ matplotlib.use('Agg')
 
 def ana_img(stock: str = ""):
     # 检查文件是否存在
+    flag = False
     image_path = f"D:\\stock_img\\{stock}\\{stock}.png"
     if not os.path.exists(image_path):
         print("文件路径不存在")
@@ -61,6 +64,15 @@ def ana_img(stock: str = ""):
             if len(contours) == 0:
                 print("未找到任何轮廓，请检查图像的质量和预处理步骤。")
             else:
+                if len(contours) > 6:
+                    with open("/stock/config/nice_stocks.json") as ns:
+                        ns_list = json.load(ns)
+
+                    # 检查是否已经在列表中
+                    if stock not in ns_list:
+                        ns_list.append(stock)
+                        with open("/stock/config/nice_stocks.json", 'w') as ns_out:
+                            json.dump(ns_list, ns_out, indent=4)
                 # 假设目标轮廓是面积最大的一个
                 contour = max(contours, key=cv2.contourArea)
 

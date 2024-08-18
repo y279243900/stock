@@ -1,6 +1,6 @@
 stock_list = []
 
-with open("D:\\Code\\Python\\pachong\\list.html", 'r', encoding='utf-8') as file:
+with open("/stock/list.html", 'r', encoding='utf-8') as file:
     for line in file:
         if ">US</span> " in line:
             part = line.split(">US</span> ", 1)
